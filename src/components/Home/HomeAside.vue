@@ -15,13 +15,26 @@ export default {
   name: "HomeAside",
   data() {
     return {
-      menu:['回到首页','管理项目','在线文档','设计原型','绘制图'],
-      active:-1,
+      menu:['首页','管理项目','在线文档','设计原型','管理绘图'],
+      routerName:['homeMain','manageProject','manageDocument','manageDesignPrototype','ManageDrawPicture'],
+      active:0,
     }
   },
   methods:{
     activeMenu(index) {
       this.active = index;
+      this.$router.push({
+        name:this.routerName[index],
+      })
+    }
+  },
+  watch:{
+    $route:{
+      immediate:true,
+      handler(newRouter,oldRouter) {
+        this.active = this.routerName.indexOf(newRouter.name);
+        console.log(this.active,newRouter)
+      }
     }
   }
 }
@@ -53,9 +66,10 @@ export default {
   //background-color: yellow;
   border-radius: 5px;
   background-color: transparent;
-  line-height: 50px;
+  line-height: 60px;
   transition: all 0.5s;
-  font-size: 15px;
+  font-size: 14px;
+  -webkit-user-select: none;
 }
 .menu:hover {
   cursor: pointer;

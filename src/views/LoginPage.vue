@@ -4,7 +4,7 @@
       <h1 class="webName">墨书</h1>
       <transition name="fade" mode="out-in">
         <div v-if="isLogin" key="login">
-          <div class="login-form">
+          <div class="login-form" @keyup.enter="login">
             <h2 class="title">登录</h2>
             <input type="text" name="username" placeholder="用户名" v-model="user.username" style="margin-top: 20px;">
             <input type="password" name="password" placeholder="密码"  v-model="user.password" >
@@ -42,11 +42,14 @@ export default {
   methods:{
     login() {
       if(this.user.username==='admin'&&this.user.password==='admin') {
-        store.state.isLogin = true;
+        store.commit('setLogin',true);
         localStorage.isLogin = true;
         this.$router.push({
           path:'/',
         })
+      }
+      else {
+
       }
     }
   }

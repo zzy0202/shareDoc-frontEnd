@@ -1,14 +1,16 @@
 <template>
   <div class="home">
     <el-container>
-      <el-aside width="170px">
+      <el-aside width="160px">
         <HomeAside></HomeAside>
       </el-aside>
       <el-container>
         <el-header>
           <HomeHeader></HomeHeader>
         </el-header>
-        <el-main>Main</el-main>
+        <el-main>
+          <router-view></router-view>
+        </el-main>
       </el-container>
     </el-container>
   </div>
@@ -62,5 +64,8 @@ body > .el-container {
 }
 ::v-deep .el-header {
   padding: 0 !important;
+}
+::v-deep .el-main {
+  padding: 0;
 }
 </style>
