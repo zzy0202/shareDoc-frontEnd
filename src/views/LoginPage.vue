@@ -43,6 +43,7 @@ export default {
     login() {
       if(this.user.username==='admin'&&this.user.password==='admin') {
         store.state.isLogin = true;
+        localStorage.isLogin = true;
         this.$router.push({
           path:'/',
         })
@@ -69,7 +70,13 @@ export default {
   top: 0;
   left: 0;
   margin: 20px 20px 20px 30px;
-  color: #3d5245;
+  color: #36413a;
+  transition: all 0.5s;
+}
+
+.webName:hover {
+  color: #83968a;
+  cursor: pointer;
 }
 
 .login-form {
