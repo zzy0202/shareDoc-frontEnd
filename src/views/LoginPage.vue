@@ -1,8 +1,9 @@
 <template>
   <div class="login">
     <div class="container">
+      <h1 class="webName">墨书</h1>
       <transition name="fade" mode="out-in">
-        <div v-if="isLogin">
+        <div v-if="isLogin" key="login">
           <div class="login-form">
             <h2 class="title">登录</h2>
             <input type="text" name="username" placeholder="用户名" v-model="user.username" style="margin-top: 20px;">
@@ -11,7 +12,7 @@
             <span class="change" @click="isLogin=false">尚未有账号?点击注册</span>
           </div>
         </div>
-        <div v-else>
+        <div v-else key="register">
           <div class="login-form">
             <h2 class="title">注册</h2>
             <input type="text" name="username" placeholder="用户名" style="margin-top: 20px;">
@@ -60,6 +61,15 @@ export default {
   justify-content: center;
   background: url("../../public/images/background.png") fixed no-repeat;
   background-size: cover;
+  position: relative;
+}
+
+.webName {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 20px 20px 20px 30px;
+  color: #3d5245;
 }
 
 .login-form {
@@ -171,13 +181,15 @@ export default {
   opacity: 1;
 }
 
-.fade-leave-active {
-  transition: all .4s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+.fade-enter-active {
+  transition: all .3s ease;
 }
-
+.fade-leave-active {
+  transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
 .fade-enter, .fade-leave-to
   /* .slide-fade-leave-active for below version 2.1.8 */ {
-  transform: translateX(-10px);
+  transform: translateX(10px);
   opacity: 0;
 }
 
