@@ -1,8 +1,11 @@
 <template>
-  <div class="HomeHeaderMain">
-    <div class="avatar"></div>
-    <div class="username">欢迎，{{username}}</div>
-    <div class="iconfont icon-ico_dengchu logout" @click="logout"></div>
+  <div class="main">
+    <div class="HomeHeaderMain">
+      <div class="avatar"></div>
+      <div class="username">欢迎，{{username}}</div>
+      <div class="iconfont icon-ico_dengchu logout" @click="logout"></div>
+    </div>
+<!--    <div class="separateLine"></div>-->
   </div>
 </template>
 
@@ -40,6 +43,19 @@ export default {
 </script>
 
 <style scoped lang="less">
+.main {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-direction: column;
+  height: 100%;
+
+}
+.separateLine {
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(rgba(9, 30, 66, 0.13) 0px, rgba(9, 30, 66, 0.13) 1px, rgba(9, 30, 66, 0.08) 1px, rgba(9, 30, 66, 0) 4px);
+}
 .HomeHeaderMain {
   width: 100%;
   height: 100%;

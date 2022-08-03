@@ -5,11 +5,15 @@
         <HomeAside></HomeAside>
       </el-aside>
       <el-container>
-        <el-header>
+        <el-header class="header">
           <HomeHeader></HomeHeader>
         </el-header>
         <el-main>
-          <router-view></router-view>
+          <keep-alive>
+            <transition name="fade" mode="out-in">
+              <router-view></router-view>
+            </transition>
+          </keep-alive>
         </el-main>
       </el-container>
     </el-container>
@@ -44,10 +48,9 @@ export default {
 }
 
 .el-main {
-  background-color: #E9EEF3;
+  //background-color: #E9EEF3;
   color: #333;
   text-align: center;
-  line-height: 160px;
 }
 
 body > .el-container {
@@ -67,5 +70,14 @@ body > .el-container {
 }
 ::v-deep .el-main {
   padding: 0;
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .2s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+.header {
+  box-shadow: rgb(0 0 0 / 6%) 0px 1px 1px, rgb(0 0 0 / 10%) 0px 2px 4px;
 }
 </style>
