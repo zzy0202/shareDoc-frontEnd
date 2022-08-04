@@ -18,6 +18,7 @@
 
 <script>
 import DocumentEditorWang from "@/components/DocumentEditorWang";
+import {generateRandomId} from "@/assets/js/util";
 import store from "@/store";
 export default {
   name: "DocumentEditor",
@@ -81,6 +82,7 @@ export default {
         fileContent: this.fileInfo.fileContent,
         lastModified: `${year}-${month}-${date}`,
         creator:store.state.user.username,
+        file:generateRandomId(),
       }
       arr.push(file);
       localStorage.setItem('fileInfo',JSON.stringify(arr));

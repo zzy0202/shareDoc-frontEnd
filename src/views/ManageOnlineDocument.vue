@@ -23,12 +23,12 @@
         <el-table-column
             prop="filename"
             label="文件名"
-            width="500">
+            width="550">
         </el-table-column>
         <el-table-column
             prop="creator"
             label="创建者"
-            width="200">
+            width="300">
         </el-table-column>
         <el-table-column
             prop="lastModified"
