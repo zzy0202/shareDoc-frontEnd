@@ -14,7 +14,7 @@
         </el-input>
       </div>
       <el-button type="primary" style="margin-left: 10px;">搜索</el-button>
-      <el-button type="success" @click="goEditDocument">添加文档</el-button>
+      <el-button type="success" @click="goCreateDocument">添加文档</el-button>
     </div>
     <div class="tablePart">
       <el-table
@@ -46,7 +46,7 @@
             label="操作">
           <template slot-scope="scope">
             <el-button type="danger" icon="el-icon-delete" circle @click="deleteDocument(scope.$index)"></el-button>
-            <el-button type="primary" icon="el-icon-edit" circle></el-button>
+            <el-button type="primary" icon="el-icon-edit" circle @click="goEditDocument(scope.$index)"></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -60,14 +60,7 @@ export default {
   data() {
     return {
       search: '',
-      tableData:JSON.parse(localStorage.getItem('fileInfo')) || [
-        {
-          filename:'hello.txt',
-          creator:'熊本熊',
-          createTime:'2022-2-2',
-          team:'天天向上'
-        }
-      ]
+      tableData:JSON.parse(localStorage.getItem('fileInfo')) || []
     }
   },
   methods:{
@@ -75,9 +68,17 @@ export default {
       localStorage.fileInfo = JSON.stringify([]);
       console.log(toDelete);
     },
-    goEditDocument() {
+    goCreateDocument() {
       this.$router.push({
         path:'/documentEdit'
+      })
+    },
+    goEditDocument(index) {
+      this.$router.push({
+        path:'/documentEdit',
+        query:{
+          fileInfo:this.tableData[index],
+        }
       })
     }
   }

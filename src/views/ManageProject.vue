@@ -6,7 +6,7 @@
       </el-breadcrumb>
     </div>
     <el-button @click="addTeam" class="buttonAddTeam" type="primary" icon="el-icon-s-custom">添加团队</el-button>
-    <add-team-modal v-if="addingTeam"></add-team-modal>
+    <add-team-modal v-if="addingTeam" v-on:closeModal="closeModal"></add-team-modal>
   </div>
 </template>
 
@@ -25,8 +25,11 @@ export default {
   methods:{
     addTeam() {
       this.addingTeam=true;
+    },
+    closeModal() {
+      this.addingTeam = false;
     }
-  }
+  },
 }
 </script>
 

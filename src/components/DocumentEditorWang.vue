@@ -21,6 +21,7 @@ import Vue from 'vue'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 
 export default Vue.extend({
+  props:['docContent'],
   components: { Editor, Toolbar },
   data() {
     return {
@@ -39,11 +40,12 @@ export default Vue.extend({
       this.$emit('getEditorContent',this.html);
     }
   },
-  mounted() {
-    // 模拟 ajax 请求，异步渲染编辑器
-    // setTimeout(() => {
-    //   this.html = '<p>模拟 Ajax 异步设置内容 HTML</p>'
-    // }, 400)
+  created() {
+    this.$nextTick(()=>{
+      if(this.docContent!=='') {
+        this.html = this.docContent;
+      }
+    })
   },
   beforeDestroy() {
     const editor = this.editor

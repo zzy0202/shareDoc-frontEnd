@@ -3,35 +3,37 @@
     <div class="addTeamContent">
       <div class="topTitle">
         <span>添加团队</span>
+        <span class="iconfont icon-guanbi close" @click="closeModal"></span>
       </div>
       <div class="formContainer">
-        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+        <el-form :model="team" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
           <el-form-item label="团队名称" prop="name">
-            <el-input v-model="ruleForm.name" style="width: 300px"></el-input>
+            <el-input v-model="team.name" style="width: 300px"></el-input>
           </el-form-item>
           <el-form-item label="团队描述" prop="desc">
-            <el-input type="textarea" v-model="ruleForm.desc" style="width: 400px"></el-input>
+            <el-input type="textarea" v-model="team.description" style="width: 400px"></el-input>
           </el-form-item>
           <el-form-item label="团队类型">
-            <el-select v-model="ruleForm.region" placeholder="请选择活动区域">
+            <el-select v-model="team.region" placeholder="请选择团队类型">
               <el-option label="开发" value="develop"></el-option>
               <el-option label="科研" value="research"></el-option>
               <el-option label="市场" value="marketing"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="添加团队队员">
-            <el-select v-model="ruleForm.region" placeholder="请选择活动区域">
-              <el-option v-for="(item,index) in friend" :label="item.username" :value="item.userId"></el-option>
+            <el-select v-model="team.member" placeholder="请选择添加团员">
+              <el-option v-for="(item,index) in friend" :label="item.username" :value="item.username"></el-option>
             </el-select>
           </el-form-item>
         </el-form>
       </div>
       <div class="teamMemberContainer">
-        <div class="member">
-            <span class="memberName">熊本熊</span>
+        <div class="member" v-for="(item,index) in memberList">
+            <span class="memberName">{{ item }}</span>
             <span class="icon-ren-danren iconfont logo"></span>
         </div>
       </div>
+      <el-button type="primary" style="width: 100px;align-self: center">创建</el-button>
     </div>
   </div>
 </template>
@@ -41,15 +43,15 @@ export default {
   name: "Modal",
   data() {
     return {
-      ruleForm: {
+      team: {
         name: '',
         region: '',
         date1: '',
         date2: '',
         delivery: false,
         type: [],
-        resource: '',
-        desc: '',
+        description: '',
+        member:'',
       },
       friend:[
         {username:'熊本熊',userId:'1'},
@@ -72,13 +74,8 @@ export default {
         type: [
           { type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }
         ],
-        resource: [
-          { required: true, message: '请选择活动资源', trigger: 'change' }
-        ],
-        desc: [
-          { required: true, message: '请填写活动形式', trigger: 'blur' }
-        ]
-      }
+      },
+      memberList:[],
     };
   },
   methods: {
@@ -94,6 +91,23 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
+    },
+    closeModal() {
+      this.$confirm('确定放弃创建团队吗?', '', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$emit('closeModal')
+      })
+    }
+  },
+  watch:{
+    'team.member':{
+      handler(newVal,oldVal) {
+        this.memberList.push(newVal);
+      },
+      deep:true,
     }
   }
 }
@@ -132,6 +146,15 @@ export default {
     line-height: 40px;
     box-shadow: rgb(0 0 0 / 6%) 0px 1px 1px, rgb(0 0 0 / 10%) 0px 2px 4px;
     font-weight: 600;
+    position: relative;
+    .close {
+      justify-self: right;
+      position: absolute;
+      right: 15px;
+    }
+    .close:hover {
+      cursor: pointer;
+    }
   }
 }
 .formContainer {
@@ -141,10 +164,10 @@ export default {
 .teamMemberContainer {
   margin-top: 10px;
   width: 90%;
-  height: 30px;
   align-self: center;
   display: flex;
   justify-content: flex-start;
+  flex-wrap: wrap;
   .member {
     display: flex;
     justify-content: center;
@@ -152,9 +175,11 @@ export default {
     border-radius: 10px;
     background-color: lightgray;
     padding: 0 12px;
+    margin-bottom: 10px;
     .logo {
-      margin-left: 5px;
+      margin-left:auto;
     }
+    margin-left: 10px;
   }
 }
 </style>
