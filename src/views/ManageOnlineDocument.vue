@@ -78,6 +78,7 @@ export default {
         path:'/documentEdit',
         query:{
           fileInfo:this.tableData[index],
+          index:index,
         }
       })
     }

@@ -45,6 +45,7 @@ export default {
       console.log(to.query.fileInfo);
       next(vm => {
         vm.fileInfo = to.query.fileInfo;
+        vm.isEditingDocument = true;
         console.log(vm.fileInfo);
       })
     } else {
@@ -88,18 +89,25 @@ export default {
     },
     addDocument(content) {
       let arr = JSON.parse(localStorage.getItem('fileInfo')) || [];
-      let year = new Date().getFullYear();
-      let month = new Date().getMonth() + 1;
-      let date = new Date().getDate();
-      let file = {
-        filename: this.fileInfo.filename,
-        fileContent: content,
-        lastModified: `${year}-${month}-${date}`,
-        creator: store.state.user.username,
-        fileId: generateRandomId(),
+      if(!this.isEditingDocument) {     //在创建文件
+        let year = new Date().getFullYear();
+        let month = new Date().getMonth() + 1;
+        let date = new Date().getDate();
+        let file = {
+          filename: this.fileInfo.filename,
+          fileContent: content,
+          lastModified: `${year}-${month}-${date}`,
+          creator: store.state.user.username,
+          fileId: generateRandomId(),
+        }
+        arr.push(file);
       }
-      console.log(file)
-      arr.push(file);
+      else {
+        this.fileInfo.fileContent = content;
+        console.log(this.fileInfo);
+        arr[parseInt(this.$route.query.index)] = this.fileInfo;
+      }
+      console.log(arr);
       localStorage.setItem('fileInfo', JSON.stringify(arr));
     }
   }
