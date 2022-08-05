@@ -8,16 +8,18 @@
             <h2 class="title">登录</h2>
             <input type="text" name="username" placeholder="用户名" v-model="user.username" style="margin-top: 20px;">
             <input type="password" name="password" placeholder="密码"  v-model="user.password" >
-            <button type="submit" @click="login">登录</button>
+            <button type="submit" @click="login" style="margin-bottom: 20px">登录</button>
             <span class="change" @click="isLogin=false">尚未有账号?点击注册</span>
           </div>
         </div>
         <div v-else key="register">
           <div class="login-form">
             <h2 class="title">注册</h2>
-            <input type="text" name="username" placeholder="用户名" style="margin-top: 20px;">
-            <input type="password" name="password" placeholder="密码">
-            <button type="submit">注册</button>
+            <input v-model="registerInfo.username" type="text" name="username" placeholder="用户名" style="margin-top: 20px;">
+            <input v-model="registerInfo.password1" type="password" name="password" placeholder="密码">
+            <input v-model="registerInfo.password2" type="password" name="password" placeholder="确认密码" >
+            <input v-model="registerInfo.email" type="text" name="pemail" placeholder="邮箱">
+            <button type="submit" @click="register">注册</button>
             <span class="change" @click="isLogin=true">返回登录</span>
           </div>
         </div>
@@ -28,6 +30,8 @@
 
 <script>
 import store from "@/store";
+import {getRegister} from "@/api/login";
+
 export default {
   name: "LoginPage",
   data() {
@@ -36,6 +40,12 @@ export default {
       user: {
         username:'',
         password:'',
+      },
+      registerInfo:{
+        username:'',
+        password1:'',
+        password2:'',
+        email:'',
       }
     }
   },
@@ -51,6 +61,15 @@ export default {
       else {
 
       }
+    },
+    async register() {
+      let res = await getRegister({
+        username:this.registerInfo.username,
+        password1:this.registerInfo.password1,
+        password2:this.registerInfo.password2,
+        email:this.registerInfo.email,
+      })
+      console.log(res)
     }
   }
 }
@@ -84,7 +103,6 @@ export default {
 
 .login-form {
   width: 280px;
-  height: 220px;
   display: flex;
   flex-direction: column;
   padding: 40px;
@@ -209,6 +227,8 @@ export default {
   position: absolute;
   bottom: 30px;
   right: 30px;
+  margin-top: 10px;
+  display: inline-block;
 }
 
 .change:hover {
