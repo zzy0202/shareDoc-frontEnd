@@ -65,7 +65,9 @@ export default {
   },
   methods:{
     deleteDocument(toDelete) {
-      localStorage.fileInfo = JSON.stringify([]);
+      this.tableData.splice(toDelete,1);
+      console.log(this.tableData)
+      localStorage.setItem('fileInfo',JSON.stringify(this.tableData));
       console.log(toDelete);
     },
     goCreateDocument() {
