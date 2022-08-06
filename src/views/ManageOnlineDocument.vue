@@ -14,7 +14,7 @@
         </el-input>
       </div>
       <el-button type="primary" style="margin-left: 10px;">搜索</el-button>
-      <el-button type="success">添加文档</el-button>
+      <el-button type="success" @click="goCreateDocument">添加文档</el-button>
     </div>
     <div class="tablePart">
       <el-table
@@ -23,16 +23,16 @@
         <el-table-column
             prop="filename"
             label="文件名"
-            width="500">
+            width="550">
         </el-table-column>
         <el-table-column
             prop="creator"
             label="创建者"
-            width="200">
+            width="300">
         </el-table-column>
         <el-table-column
-            prop="createTime"
-            label="创建时间"
+            prop="lastModified"
+            label="最后一次修改"
             width="200">
         </el-table-column>
         <el-table-column
@@ -42,9 +42,12 @@
         </el-table-column>
         <el-table-column
             :header-cell-style="{'text-align':'center'}"
+            width="110"
             label="操作">
-          <el-button type="danger" icon="el-icon-delete" circle></el-button>
-          <el-button type="primary" icon="el-icon-edit" circle></el-button>
+          <template slot-scope="scope">
+            <el-button type="danger" icon="el-icon-delete" circle @click="deleteDocument(scope.$index)"></el-button>
+            <el-button type="primary" icon="el-icon-edit" circle @click="goEditDocument(scope.$index)"></el-button>
+          </template>
         </el-table-column>
       </el-table>
     </div>
@@ -57,14 +60,29 @@ export default {
   data() {
     return {
       search: '',
-      tableData: [
-        {
-          filename: 'HelloWorld.txt',
-          creator: '熊本熊',
-          createTime: '2022-08-02',
-          team: '天天向上'
+      tableData:JSON.parse(localStorage.getItem('fileInfo')) || []
+    }
+  },
+  methods:{
+    deleteDocument(toDelete) {
+      this.tableData.splice(toDelete,1);
+      console.log(this.tableData)
+      localStorage.setItem('fileInfo',JSON.stringify(this.tableData));
+      console.log(toDelete);
+    },
+    goCreateDocument() {
+      this.$router.push({
+        path:'/documentEdit'
+      })
+    },
+    goEditDocument(index) {
+      this.$router.push({
+        path:'/documentEdit',
+        query:{
+          fileInfo:this.tableData[index],
+          index:index,
         }
-      ]
+      })
     }
   }
 }
@@ -100,5 +118,8 @@ export default {
 .tablePart {
   width: 98%;
   margin: 0 auto;
+}
+::v-deep .el-table_1_column_5{
+  text-align: center !important;
 }
 </style>

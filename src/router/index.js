@@ -7,6 +7,7 @@ import ManageOnlineDocument from "@/views/ManageOnlineDocument";
 import ManageDesignPrototype from "@/views/ManageDesignPrototype";
 import ManageDrawPicture from "@/views/ManageDrawPicture";
 import LoginPage from "@/views/LoginPage";
+import DocumentEditor from "@/views/DocumentEditorPage";
 import store from "@/store";
 
 Vue.use(VueRouter)
@@ -34,6 +35,11 @@ const routes = [
 		meta: {
 			requiredLogin: true,
 		}
+	},
+	{
+		path:'/documentEdit',
+		name:'documentEdit',
+		component: DocumentEditor,
 	}
 ]
 

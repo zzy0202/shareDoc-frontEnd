@@ -6,13 +6,18 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     isLogin:localStorage.isLogin === 'true',
+    user:{
+      username:localStorage.getItem('username')===''?localStorage.getItem('username') : '' ,
+      cookie:'',
+    }
   },
   getters: {
   },
   mutations: {
     setLogin(state,payload) {
       console.log(payload)
-      state.isLogin = payload;
+      state.isLogin = payload.isLogin;
+      state.user.username = payload.username;
     }
   },
   actions: {

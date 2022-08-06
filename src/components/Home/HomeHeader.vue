@@ -2,7 +2,7 @@
   <div class="main">
     <div class="HomeHeaderMain">
       <div class="avatar"></div>
-      <div class="username">欢迎，{{username}}</div>
+      <div class="username">欢迎，{{$store.state.user.username}}</div>
       <div class="iconfont icon-ico_dengchu logout" @click="logout"></div>
     </div>
 <!--    <div class="separateLine"></div>-->
