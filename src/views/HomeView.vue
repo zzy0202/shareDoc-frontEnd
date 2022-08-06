@@ -24,11 +24,19 @@
 // @ is an alias to /src
 import HomeAside from "@/components/Home/HomeAside";
 import HomeHeader from "@/components/Home/HomeHeader";
+import {getNotice} from "@/api/profile";
+import store from "@/store"
 export default {
   name: 'HomeView',
   components:{
     HomeAside,
     HomeHeader,
+  },
+  async mounted() {
+    let res = await getNotice({
+      username:store.state.user.username
+    })
+    console.log(res)
   }
 }
 </script>

@@ -7,7 +7,7 @@ export default new Vuex.Store({
   state: {
     isLogin:localStorage.isLogin === 'true',
     user:{
-      username:localStorage.getItem('username')===''?localStorage.getItem('username') : '' ,
+      username:localStorage.getItem('username')!==''?localStorage.getItem('username') : '' ,
       cookie:'',
     }
   },
@@ -15,7 +15,7 @@ export default new Vuex.Store({
   },
   mutations: {
     setLogin(state,payload) {
-      console.log(payload)
+      localStorage.setItem('username',payload.username);
       state.isLogin = payload.isLogin;
       state.user.username = payload.username;
     }

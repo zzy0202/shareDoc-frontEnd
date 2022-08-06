@@ -10,7 +10,7 @@
           <el-form-item label="团队名称" prop="name">
             <el-input v-model="team.name" style="width: 300px"></el-input>
           </el-form-item>
-          <el-form-item label="团队描述" prop="desc">
+          <el-form-item label="团队描述" prop="teamDescription">
             <el-input type="textarea" v-model="team.description" style="width: 400px"></el-input>
           </el-form-item>
           <el-form-item label="团队类型">
@@ -28,30 +28,30 @@
         </el-form>
       </div>
       <div class="teamMemberContainer">
-        <div class="member" v-for="(item,index) in memberList">
+        <div class="member" v-for="(item,index) in team.memberList">
             <span class="memberName">{{ item }}</span>
             <span class="icon-ren-danren iconfont logo"></span>
         </div>
       </div>
-      <el-button type="primary" style="width: 100px;align-self: center">创建</el-button>
+      <el-button type="primary" style="width: 100px;align-self: center" @click="submitForm">创建</el-button>
     </div>
   </div>
 </template>
 
 <script>
+import {createProject,createTeam} from "@/api/projectManage";
+import store from '@/store'
 export default {
   name: "Modal",
   data() {
     return {
       team: {
         name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        description: '',
+        description: '暂无描述',
         member:'',
+        memberList:[],
+        JSONMemberList:[],
+        region:'',
       },
       friend:[
         {username:'熊本熊',userId:'1'},
@@ -62,35 +62,32 @@ export default {
         name: [
           { required: true, message: '请输入团队名称', trigger: 'blur' },
         ],
-        region: [
+        description: [
           { required: true, message: '请填写团队描述', trigger: 'change' }
         ],
-        date1: [
-          { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
-        ],
-        date2: [
-          { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
-        ],
-        type: [
-          { type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }
-        ],
       },
-      memberList:[],
     };
   },
   methods: {
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert('submit!');
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
-      });
-    },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
+    async submitForm(formName) {
+      let res = await createTeam({
+        username:store.state.user.username,
+        team_name:this.team.name,
+        description:this.team.description,
+        region:2,
+        members:this.team.JSONMemberList,
+      })
+      console.log(res);
+      // let arr = JSON.parse(localStorage.getItem('getProject'))|| [];
+      // console.log(arr);
+      // arr.push({
+      //     username:store.state.user.username,
+      //     team_name:this.team.name,
+      //     description:this.team.description,
+      //     region:0,
+      //     members:this.team.memberList,
+      // })
+      // localStorage.setItem('getProject',JSON.stringify(arr));
     },
     closeModal() {
       this.$confirm('确定放弃创建团队吗?', '', {
@@ -105,7 +102,9 @@ export default {
   watch:{
     'team.member':{
       handler(newVal,oldVal) {
-        this.memberList.push(newVal);
+        console.log('kskksks')
+        this.team.memberList.push(newVal);
+        this.team.JSONMemberList.push(({member:newVal}))
       },
       deep:true,
     }

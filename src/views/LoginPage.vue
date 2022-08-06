@@ -7,11 +7,8 @@
           <div class="login-form" @keyup.enter="login">
             <h2 class="title">登录</h2>
             <input type="text" name="username" placeholder="用户名" v-model="user.username" style="margin-top: 20px;">
-            <input type="password" name="password" placeholder="密码"  v-model="user.password" >
-<<<<<<< HEAD
+            <input type="password" name="password" placeholder="密码" v-model="user.password">
             <span class="change" @click="isLogin=false">尚未有账号?点击注册</span>
-=======
->>>>>>> 4ab0662d3f1e1407271b73d620f4d656274ee7bb
             <button type="submit" @click="login" style="margin-bottom: 20px">登录</button>
             <span class="change" @click="isLogin=false">尚未有账号?点击注册</span>
           </div>
@@ -19,9 +16,10 @@
         <div v-else key="register">
           <div class="login-form">
             <h2 class="title">注册</h2>
-            <input v-model="registerInfo.username" type="text" name="username" placeholder="用户名" style="margin-top: 20px;">
+            <input v-model="registerInfo.username" type="text" name="username" placeholder="用户名"
+                   style="margin-top: 20px;">
             <input v-model="registerInfo.password1" type="password" name="password" placeholder="密码">
-            <input v-model="registerInfo.password2" type="password" name="password" placeholder="确认密码" >
+            <input v-model="registerInfo.password2" type="password" name="password" placeholder="确认密码">
             <input v-model="registerInfo.email" type="text" name="pemail" placeholder="邮箱">
             <button type="submit" @click="register">注册</button>
             <span class="change" @click="isLogin=true">返回登录</span>
@@ -34,55 +32,54 @@
 
 <script>
 import store from "@/store";
-import {getRegister,getLogin} from "@/api/login";
+import {getRegister, getLogin} from "@/api/login";
+
 export default {
   name: "LoginPage",
   data() {
     return {
       isLogin: true,
       user: {
-        username:'',
-        password:'',
+        username: '',
+        password: '',
       },
-      registerInfo:{
-        username:'',
-        password1:'',
-        password2:'',
-        email:'',
+      registerInfo: {
+        username: '',
+        password1: '',
+        password2: '',
+        email: '',
       }
     }
   },
-  methods:{
+  methods: {
     async login() {
-      let res =await getLogin({
-        username:this.user.username,
-        password:this.user.password,
+      let res = await getLogin({
+        username: this.user.username,
+        password: this.user.password,
       })
       console.log(res);
-      if(res.msg==='success') {
-        store.commit('setLogin', {isLogin:true,username:this.user.username});
+      if (res.msg === 'success') {
+        store.commit('setLogin', {isLogin: true, username: this.user.username});
         localStorage.isLogin = true;
         await this.$router.push({
-          path:'/',
+          path: '/',
         })
-      }
-      else {
+      } else {
 
       }
     },
     async register() {
       let res = await getRegister({
-        username:this.registerInfo.username,
-        password1:this.registerInfo.password1,
-        password2:this.registerInfo.password2,
-        email:this.registerInfo.email,
+        username: this.registerInfo.username,
+        password1: this.registerInfo.password1,
+        password2: this.registerInfo.password2,
+        email: this.registerInfo.email,
       })
-<<<<<<< HEAD
-      if(res.msg==='success') { //注册成功!
-        store.commit('setLogin',{isLogin:true,username:this.registerInfo.username});
+      if (res.msg === 'success') { //注册成功!
+        store.commit('setLogin', {isLogin: true, username: this.registerInfo.username});
         localStorage.isLogin = true;
         await this.$router.push({
-          path:'/',
+          path: '/',
         })
         this.$message({
           showClose: true,
@@ -90,9 +87,6 @@ export default {
           type: 'success'
         });
       }
-=======
-      console.log(res)
->>>>>>> 4ab0662d3f1e1407271b73d620f4d656274ee7bb
     }
   }
 }
@@ -235,9 +229,11 @@ export default {
 .fade-enter-active {
   transition: all .3s ease;
 }
+
 .fade-leave-active {
   transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
+
 .fade-enter, .fade-leave-to
   /* .slide-fade-leave-active for below version 2.1.8 */ {
   transform: translateX(10px);
