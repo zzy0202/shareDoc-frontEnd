@@ -17,21 +17,22 @@ import store from '@/store'
 
 export default {
   name: "ManageProject",
-  components:{
+  components: {
     AddTeamModal,
   },
   data() {
     return {
-      addingTeam:false,
+      addingTeam: false,
     }
   },
   async mounted() {
-    let res = await getProjectManageInfo({username:store.state.user.username});
+    let res = await getProjectManageInfo({username: store.state.user.username});
     console.log(res);
   },
-  methods:{
+
+  methods: {
     addTeam() {
-      this.addingTeam=true;
+      this.addingTeam = true;
     },
     closeModal() {
       this.addingTeam = false;
@@ -54,7 +55,8 @@ export default {
   font-weight: 800 !important;
   cursor: pointer !important;
 }
-.buttonAddTeam{
+
+.buttonAddTeam {
   margin: 10px 0 0 15px;
 }
 </style>
