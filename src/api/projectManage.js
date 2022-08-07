@@ -2,28 +2,40 @@ import request from "@/api/index";
 
 let getProjectManageInfo = params => {
 	return request({
-		url:'/team/manage/',
+		url: '/team/manage/',
 		params,
-		method:"GET",
+		method: "GET",
 	})
 }
 
-let createProject = (data) =>{
+let getTeamList = params => {
 	return request({
-		url:'/project/create/',
-		method:"POST",
+		url: '/team/list/',
+		method: "GET",
+		params,
+	})
+}
+
+let createProject = (data) => {
+	return request({
+		url: '/project/create/',
+		method: "POST",
 		data,
 	})
 }
 
-let createTeam = data =>{
+let createTeam = data => {
 	return request({
-		url:'/team/create/',
+		url: '/team/create/',
 		data,
-		method:"POST",
+		method: "POST",
 	})
 }
+
 
 export {
-	getProjectManageInfo,createProject,createTeam
+	getProjectManageInfo,
+	createProject,
+	createTeam,
+	getTeamList,
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <div class="container">
+    <div class="container" style="overflow:hidden;">
       <h1 class="webName">墨书</h1>
       <transition name="fade" mode="out-in">
         <div v-if="isLogin" key="login">
@@ -93,6 +93,9 @@ export default {
 </script>
 
 <style scoped lang="less">
+.login {
+  overflow: hidden;
+}
 .container {
   width: 100vw;
   height: 100vh;

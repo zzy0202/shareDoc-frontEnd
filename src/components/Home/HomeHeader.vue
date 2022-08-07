@@ -1,6 +1,10 @@
 <template>
   <div class="main">
     <div class="HomeHeaderMain">
+      <div class="invite">
+        <span>查看邀请</span>
+        <span class="iconfont icon-yaoqing"></span>
+      </div>
       <div class="avatar"></div>
       <div class="username">欢迎，{{$store.state.user.username}}</div>
       <div class="iconfont icon-ico_dengchu logout" @click="logout"></div>
@@ -11,12 +15,19 @@
 
 <script>
 import store from '@/store'
+import {getFriendRequest} from "@/api/profile";
 export default {
   name: "HomeHeader",
   data() {
     return {
       username:'熊本熊',
     }
+  },
+  async mounted() {
+    // let res = await getFriendRequest({
+    //   username:store.state.user.username,
+    // })
+    // console.log(res)
   },
   methods:{
     logout() {
@@ -86,5 +97,8 @@ export default {
 .logout:hover {
   cursor: pointer;
   color: coral;
+}
+.invite {
+  margin-right: 25px;
 }
 </style>

@@ -24,7 +24,7 @@
 // @ is an alias to /src
 import HomeAside from "@/components/Home/HomeAside";
 import HomeHeader from "@/components/Home/HomeHeader";
-import {getNotice} from "@/api/profile";
+import {getNotice,getFriendRequest} from "@/api/profile";
 import store from "@/store"
 export default {
   name: 'HomeView',
@@ -33,7 +33,7 @@ export default {
     HomeHeader,
   },
   async mounted() {
-    let res = await getNotice({
+    let res = await getFriendRequest({
       username:store.state.user.username
     })
     console.log(res)
@@ -57,6 +57,7 @@ export default {
 
 .el-main {
   color: #333;
+  overflow: hidden;
 }
 
 body > .el-container {

@@ -23,7 +23,7 @@
         <el-table-column
             prop="filename"
             label="文件名"
-            width="550">
+            width="500">
         </el-table-column>
         <el-table-column
             prop="creator"

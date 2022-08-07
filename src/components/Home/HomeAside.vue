@@ -16,16 +16,21 @@ export default {
   data() {
     return {
       menu:['首页','团队管理','文档管理','设计原型'],
-      routerName:['homeMain','manageProject','manageDocument','manageDesignPrototype','ManageDrawPicture'],
+      routerName:['homeMain','manageTeam','manageDocument','manageDesignPrototype'],
       active:0,
     }
   },
   methods:{
     activeMenu(index) {
-      this.active = index;
-      this.$router.push({
-        name:this.routerName[index],
-      })
+      if(this.routerName[index]!=='manageDesignPrototype') {
+        this.active = index;
+        this.$router.push({
+          name:this.routerName[index],
+        })
+      }
+      else {
+        window.location.href='http://draw.io/'
+      }
     }
   },
   watch:{

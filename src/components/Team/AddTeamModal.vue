@@ -22,7 +22,7 @@
           </el-form-item>
           <el-form-item label="添加团队队员">
             <el-select v-model="team.member" placeholder="请选择添加团员">
-              <el-option v-for="(item,index) in friend" :label="item.username" :value="item.username"></el-option>
+              <el-option v-for="(item,index) in friend" :label="item.fields.username" :value="item.fields.username"></el-option>
             </el-select>
           </el-form-item>
         </el-form>
@@ -39,8 +39,9 @@
 </template>
 
 <script>
-import {createProject,createTeam} from "@/api/projectManage";
+import {getProjectManageInfo,createTeam} from "@/api/projectManage";
 import store from '@/store'
+
 export default {
   name: "Modal",
   data() {
@@ -53,11 +54,7 @@ export default {
         JSONMemberList:[],
         region:'',
       },
-      friend:[
-        {username:'熊本熊',userId:'1'},
-        {username:'时冉',userId: '2'},
-        {username: 'jmj',userId:'3'},
-      ],
+      friend:[],
       rules: {
         name: [
           { required: true, message: '请输入团队名称', trigger: 'blur' },
@@ -68,6 +65,12 @@ export default {
       },
     };
   },
+  async mounted(){
+    this.friend = await getProjectManageInfo({
+      username: store.state.user.username,
+    });
+    console.log(this.friend)
+  },
   methods: {
     async submitForm(formName) {
       let res = await createTeam({
@@ -77,26 +80,27 @@ export default {
         region:2,
         members:this.team.JSONMemberList,
       })
-      console.log(res);
-      // let arr = JSON.parse(localStorage.getItem('getProject'))|| [];
-      // console.log(arr);
-      // arr.push({
-      //     username:store.state.user.username,
-      //     team_name:this.team.name,
-      //     description:this.team.description,
-      //     region:0,
-      //     members:this.team.memberList,
-      // })
-      // localStorage.setItem('getProject',JSON.stringify(arr));
-    },
-    closeModal() {
-      this.$confirm('确定放弃创建团队吗?', '', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
+      if(res.msg==='success') {
+        this.$message({
+          message:"创建团队成功!",
+          type:"success",
+        })
         this.$emit('closeModal')
-      })
+      }
+    },
+    closeModal(test) {
+      if(test!==11) {
+        this.$confirm('确定放弃创建团队吗?', '', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$emit('closeModal')
+        })
+      }
+      else {
+        this.$emit('closeModal')
+      }
     }
   },
   watch:{
@@ -180,5 +184,11 @@ export default {
     }
     margin-left: 10px;
   }
+}
+::v-deep .el-form-item__label {
+  margin: 10px 0 0 10px;
+}
+::v-deep .el-textarea__inner {
+  margin: 10px 0 0 15px;
 }
 </style>

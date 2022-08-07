@@ -2,12 +2,13 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import HomeMain from "@/views/HomeMain";
-import ManageProject from "@/views/ManageProject";
+import ManageTeam from "@/views/ManageTeam";
 import ManageOnlineDocument from "@/views/ManageOnlineDocument";
 import ManageDesignPrototype from "@/views/ManageDesignPrototype";
 import ManageDrawPicture from "@/views/ManageDrawPicture";
 import LoginPage from "@/views/LoginPage";
 import DocumentEditor from "@/views/DocumentEditorPage";
+import TeamDetails from "@/views/TeamDetails";
 import store from "@/store";
 
 Vue.use(VueRouter)
@@ -17,15 +18,15 @@ const routes = [
 		path: '/',
 		name: 'home',
 		component: HomeView,
-		redirect:{
-			name:'homeMain',
+		redirect: {
+			name: 'homeMain',
 		},
-		children:[
-			{path:'/main',name:'homeMain',component:HomeMain},
-			{path:'/manageProject',name:'manageProject',component:ManageProject},
-			{path:'/manageDocument',name:'manageDocument',component:ManageOnlineDocument},
-			{path:'/manageDesignPrototype',name:'manageDesignPrototype',component: ManageDesignPrototype},
-			{path:'/ManageDrawPicture',name:'ManageDrawPicture',component: ManageDrawPicture},
+		children: [
+			{path: '/main', name: 'homeMain', component: HomeMain},
+			{path: '/manageTeam', name: 'manageTeam', component: ManageTeam},
+			{path: '/manageDocument', name: 'manageDocument', component: ManageOnlineDocument},
+			{path: '/manageDesignPrototype', name: 'manageDesignPrototype', component: ManageDesignPrototype},
+			{path: '/teamDetails',name: 'teamDetails', component: TeamDetails},
 		]
 	},
 	{
@@ -37,8 +38,8 @@ const routes = [
 		}
 	},
 	{
-		path:'/documentEdit',
-		name:'documentEdit',
+		path: '/documentEdit',
+		name: 'documentEdit',
 		component: DocumentEditor,
 	}
 ]
