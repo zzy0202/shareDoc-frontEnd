@@ -26,7 +26,7 @@ const routes = [
 			{path: '/manageTeam', name: 'manageTeam', component: ManageTeam},
 			{path: '/manageDocument', name: 'manageDocument', component: ManageOnlineDocument},
 			{path: '/manageDesignPrototype', name: 'manageDesignPrototype', component: ManageDesignPrototype},
-			{path: '/teamDetails',name: 'teamDetails', component: TeamDetails},
+			{path: '/teamDetails/:teamId',name: 'teamDetails', component: TeamDetails},
 		]
 	},
 	{

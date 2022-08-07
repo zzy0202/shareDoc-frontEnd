@@ -1,7 +1,7 @@
 <template>
   <div id="app" style="overflow: hidden">
     <keep-alive>
-      <transition name="fade" mode="out-in">
+      <transition name="fade">
         <router-view/>
       </transition>
     </keep-alive>

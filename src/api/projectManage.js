@@ -16,6 +16,14 @@ let getTeamList = params => {
 	})
 }
 
+let getTeamDetails = (fileId,params) => {
+	return request({
+		url:'/team/detail/'+fileId,
+		method:"GET",
+		params,
+	})
+}
+
 let createProject = (data) => {
 	return request({
 		url: '/project/create/',
@@ -38,4 +46,5 @@ export {
 	createProject,
 	createTeam,
 	getTeamList,
+	getTeamDetails,
 }
