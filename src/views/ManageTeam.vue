@@ -65,6 +65,7 @@ export default {
     },
     closeModal() {
       this.addingTeam = false;
+      this.$router.go(1);
     },
     async addFriend() {
       let res = await addFriend({

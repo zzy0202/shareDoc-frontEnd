@@ -1,8 +1,8 @@
 @font-face {
     font-family: "iconfont"; /* Project id 3563475 */
-    src: url('//at.alicdn.com/t/c/font_3563475_qxe0820z4el.woff2?t=1659807396174') format('woff2'),
-    url('//at.alicdn.com/t/c/font_3563475_qxe0820z4el.woff?t=1659807396174') format('woff'),
-    url('//at.alicdn.com/t/c/font_3563475_qxe0820z4el.ttf?t=1659807396174') format('truetype');
+    src: url('//at.alicdn.com/t/c/font_3563475_h3t62t8x4nc.woff2?t=1659928898424') format('woff2'),
+    url('//at.alicdn.com/t/c/font_3563475_h3t62t8x4nc.woff?t=1659928898424') format('woff'),
+    url('//at.alicdn.com/t/c/font_3563475_h3t62t8x4nc.ttf?t=1659928898424') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,10 @@
     font-style: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-jurassic_add-project:before {
+    content: "\e6ec";
 }
 
 .icon-tuandui:before {

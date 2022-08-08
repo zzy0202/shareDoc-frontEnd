@@ -247,7 +247,7 @@ export default {
   font-size: 14px;
   color: #6b6464;
   position: absolute;
-  bottom: 30px;
+  bottom: 20px;
   right: 30px;
   margin-top: 10px;
   display: inline-block;

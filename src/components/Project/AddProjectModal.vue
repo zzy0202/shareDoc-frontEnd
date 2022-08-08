@@ -2,36 +2,18 @@
   <div class="main">
     <div class="addTeamContent">
       <div class="topTitle">
-        <span>添加团队</span>
+        <span>添加项目</span>
         <span class="iconfont icon-guanbi close" @click="closeModal"></span>
       </div>
       <div class="formContainer">
-        <el-form :model="team" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-          <el-form-item label="团队名称" prop="name">
-            <el-input v-model="team.name" style="width: 300px"></el-input>
+        <el-form :model="project" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+          <el-form-item label="项目名称" prop="name">
+            <el-input v-model="project.name" style="width: 300px"></el-input>
           </el-form-item>
-          <el-form-item label="团队描述" prop="teamDescription">
-            <el-input type="textarea" v-model="team.description" style="width: 400px"></el-input>
-          </el-form-item>
-          <el-form-item label="团队类型">
-            <el-select v-model="team.region" placeholder="请选择团队类型">
-              <el-option label="开发" value="develop"></el-option>
-              <el-option label="科研" value="research"></el-option>
-              <el-option label="市场" value="marketing"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="添加团队队员">
-            <el-select v-model="team.member" placeholder="请选择添加团员">
-              <el-option v-for="(item,index) in friend" :label="item.fields.username" :value="item.fields.username"></el-option>
-            </el-select>
+          <el-form-item label="项目描述" prop="teamDescription">
+            <el-input type="textarea" v-model="project.description" style="width: 400px"></el-input>
           </el-form-item>
         </el-form>
-      </div>
-      <div class="teamMemberContainer">
-        <div class="member" v-for="(item,index) in team.memberList">
-            <span class="memberName">{{ item }}</span>
-            <span class="icon-ren-danren iconfont logo"></span>
-        </div>
       </div>
       <el-button type="primary" style="width: 100px;align-self: center" @click="submitForm">创建</el-button>
     </div>
@@ -39,20 +21,16 @@
 </template>
 
 <script>
-import {getProjectManageInfo,createTeam} from "@/api/projectManage";
+import {createProject} from "@/api/projectManage";
 import store from '@/store'
 
 export default {
-  name: "Modal",
+  name: "AddProjectModal",
   data() {
     return {
-      team: {
+      project: {
         name: '',
         description: '暂无描述',
-        member:'',
-        memberList:[],
-        JSONMemberList:[],
-        region:'',
       },
       friend:[],
       rules: {
@@ -65,28 +43,16 @@ export default {
       },
     };
   },
-  async mounted(){
-    this.friend = await getProjectManageInfo({
-      username: store.state.user.username,
-    });
-    console.log(this.friend)
-  },
   methods: {
     async submitForm(formName) {
-      let res = await createTeam({
-        username:store.state.user.username,
-        team_name:this.team.name,
-        description:this.team.description,
-        region:2,
-        members:this.team.JSONMemberList,
+      let res = await createProject({
+        username: store.state.user.username,
+        project_name: this.project.name,
+        description: this.project.description,
+        team_pk: this.$route.params.teamId,
       })
-      if(res.msg==='success') {
-        this.$message({
-          message:"创建团队成功!",
-          type:"success",
-        })
-        this.$emit('closeModal');
-      }
+      console.log(res)
+      this.$emit('closeModal');
     },
     closeModal(test) {
       if(test!==11) {
@@ -131,7 +97,7 @@ export default {
 }
 .addTeamContent {
   width: 600px;
-  height: 500px;
+  height: 350px;
   background-color: whitesmoke;
   border-radius: 15px;
   z-index: 2;
@@ -189,6 +155,8 @@ export default {
   margin: 10px 0 0 10px;
 }
 ::v-deep .el-textarea__inner {
-  margin: 10px 0 0 15px;
+}
+::v-deep .el-input__inner {
+  margin: 10px 0 0 0 ;
 }
 </style>
