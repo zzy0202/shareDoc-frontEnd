@@ -9,13 +9,18 @@ import ManageDrawPicture from "@/views/ManageDrawPicture";
 import LoginPage from "@/views/LoginPage";
 import DocumentEditor from "@/views/DocumentEditorPage";
 import TeamDetails from "@/views/TeamDetails";
+import HomePage from "@/views/HomePage";
 import store from "@/store";
 
 Vue.use(VueRouter)
 
 const routes = [
 	{
-		path: '/',
+		path:'/',
+		redirect: '/homePage'
+	},
+	{
+		path: '/home',
 		name: 'home',
 		component: HomeView,
 		redirect: {
@@ -41,6 +46,11 @@ const routes = [
 		path: '/documentEdit',
 		name: 'documentEdit',
 		component: DocumentEditor,
+	},
+	{
+		path:'/homePage',
+		name:'homePage',
+		component: HomePage,
 	}
 ]
 
@@ -49,7 +59,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-	if (to.path === '/login') {
+	if (to.path === '/login'||to.path==='/homePage') {
 		next();
 	} else {
 		if (!store.state.isLogin) {

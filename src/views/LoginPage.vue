@@ -62,7 +62,7 @@ export default {
         store.commit('setLogin', {isLogin: true, username: this.user.username});
         localStorage.isLogin = true;
         await this.$router.push({
-          path: '/',
+          path: '/home',
         })
       } else {
 

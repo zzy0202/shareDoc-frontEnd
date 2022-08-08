@@ -16,7 +16,7 @@ export default {
   data() {
     return {
       menu:['首页','团队管理','文档管理','设计原型'],
-      routerName:['homeMain','manageTeam','manageDocument','manageDesignPrototype'],
+      routerName:['homeMain','manageTeam','manageDocument','manageDesignPrototype','teamDetails'],
       active:0,
     }
   },
@@ -24,6 +24,10 @@ export default {
     activeMenu(index) {
       if(this.routerName[index]!=='manageDesignPrototype') {
         this.active = index;
+        if(this.active===4) {
+          this.active=1;
+        }
+        console.log(this.active)
         this.$router.push({
           name:this.routerName[index],
         })
@@ -38,7 +42,9 @@ export default {
       immediate:true,
       handler(newRouter,oldRouter) {
         this.active = this.routerName.indexOf(newRouter.name);
-        console.log(this.active,newRouter)
+        if(this.active===4) {
+          this.active=1;
+        }
       }
     }
   }

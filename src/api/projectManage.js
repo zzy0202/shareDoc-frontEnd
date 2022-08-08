@@ -48,6 +48,14 @@ let getProjectList = params =>{
 	})
 }
 
+let deleteTeamMember = data =>{
+	return request({
+		url:'/team/del/',
+		method:"POST",
+		data,
+	})
+}
+
 export {
 	getProjectManageInfo,
 	createProject,
@@ -55,4 +63,5 @@ export {
 	getTeamList,
 	getTeamDetails,
 	getProjectList,
+	deleteTeamMember,
 }
