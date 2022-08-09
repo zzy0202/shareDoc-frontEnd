@@ -1,8 +1,8 @@
 @font-face {
     font-family: "iconfont"; /* Project id 3563475 */
-    src: url('//at.alicdn.com/t/c/font_3563475_h3t62t8x4nc.woff2?t=1659928898424') format('woff2'),
-    url('//at.alicdn.com/t/c/font_3563475_h3t62t8x4nc.woff?t=1659928898424') format('woff'),
-    url('//at.alicdn.com/t/c/font_3563475_h3t62t8x4nc.ttf?t=1659928898424') format('truetype');
+    src: url('//at.alicdn.com/t/c/font_3563475_hsq25v74ixl.woff2?t=1660056006070') format('woff2'),
+    url('//at.alicdn.com/t/c/font_3563475_hsq25v74ixl.woff?t=1660056006070') format('woff'),
+    url('//at.alicdn.com/t/c/font_3563475_hsq25v74ixl.ttf?t=1660056006070') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,14 @@
     font-style: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-yuanxingsheji:before {
+    content: "\e61e";
+}
+
+.icon-chuangjianzhibiao:before {
+    content: "\e61f";
 }
 
 .icon-jurassic_add-project:before {

@@ -13,7 +13,7 @@
              @keyup.enter="cancelEditTitle">
       <span class="iconfont icon-bianji" style="color: skyblue" @click="editTitle"></span>
     </div>
-    <DocumentEditorWang style="width: 95vw;margin: 0 auto" class="editor" ref="editorChild"
+    <DocumentEditorWang style="width: 95vw;margin: 0 auto 50px auto;height: 150vh" class="editor" ref="editorChild"
                         v-on:getEditorContent="addDocument" :docContent="fileInfo.fileContent"></DocumentEditorWang>
   </div>
 </template>

@@ -89,6 +89,8 @@ export default {
 </script>
 
 <style scoped>
+.element { overflow: -moz-scrollbars-none; }
+
 ::v-deep .breadCrumb {
   margin: 15px 0 0 15px;
   font-weight: 800 !important;
