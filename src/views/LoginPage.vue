@@ -79,7 +79,7 @@ export default {
         store.commit('setLogin', {isLogin: true, username: this.registerInfo.username});
         localStorage.isLogin = true;
         await this.$router.push({
-          path: '/',
+          path: '/home',
         })
         this.$message({
           showClose: true,

@@ -102,13 +102,18 @@ export default {
 .journeyButton {
   width: 240px;
   height: 55px;
-  background-color: #ce7171;
+  background-color: rgba(206, 113, 113, 0.51);
   z-index: 2;
   color: #efefef;
   border: none;
   align-self: center;
   margin-top: 65px;
-  border-radius: 20px;
+  border-radius: 30px;
   font-size: 16px;
+  transition: all 0.5s;
+}
+.journeyButton:hover {
+  cursor: pointer;
+  background-color: #ce7171;
 }
 </style>

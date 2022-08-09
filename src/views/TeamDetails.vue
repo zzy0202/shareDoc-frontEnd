@@ -25,6 +25,18 @@
                      @click="addProject"></el-button>
         </div>
         <div style="margin: 20px 0 0 0;" v-if="teamProjects.length===0">尚未有项目，试试创建一个吧</div>
+        <div v-else class="projectCategoryContainer">
+          <el-card class="box-card" v-for="(item,index) in teamProjects" @click.native="goProjectDetails(index)">
+            <div slot="header" class="clearfix">
+              <span>{{ item.fields.name }}</span>
+            </div>
+            <div class="text item">
+              {{ item.fields.description }}
+            </div>
+            <el-button class="deleteProject" type="danger" icon="el-icon-delete" style="float: right; padding: 3px 0"
+                       circle></el-button>
+          </el-card>
+        </div>
         <AddProjectModal v-if="showAddProjectModal" v-on:closeModal="closeModal"></AddProjectModal>
       </div>
     </div>
@@ -44,11 +56,9 @@
             label="邮箱"
             width="350">
           <template slot-scope="scope">
-<!--            <el-popover trigger="hover" placement="top">-->
-              <div slot="reference" class="name-wrapper">
-                <el-tag size="medium">{{ scope.row.fields.email }}</el-tag>
-              </div>
-<!--            </el-popover>-->
+            <div slot="reference" class="name-wrapper">
+              <el-tag size="medium">{{ scope.row.fields.email }}</el-tag>
+            </div>
           </template>
         </el-table-column>
         <el-table-column label="操作">
@@ -56,7 +66,8 @@
             <el-button
                 size="mini"
                 type="danger"
-                @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                @click="handleDelete(scope.$index, scope.row)">删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -65,9 +76,10 @@
 </template>
 
 <script>
-import {getTeamDetails, getProjectList,deleteTeamMember} from "@/api/projectManage";
+import {deleteTeamMember, getProjectList, getTeamDetails} from "@/api/projectManage";
 import AddProjectModal from "@/components/Project/AddProjectModal";
 import store from "@/store";
+
 export default {
   name: "TeamDetails",
   components: {
@@ -84,7 +96,7 @@ export default {
       team_pk: this.$route.params.teamId,
       username: store.state.user.username,
     })
-    console.log(res);
+    console.log(this.teamProjects);
   },
   methods: {
     addProject() {
@@ -100,11 +112,20 @@ export default {
     async handleDelete(index, row) {
       console.log(index, row);
       let res = await deleteTeamMember({
-        team_pk:parseInt(this.$route.params.teamId),
-        oper:store.state.user.username,
-        target:row.fields.username,
+        team_pk: parseInt(this.$route.params.teamId),
+        oper: store.state.user.username,
+        target: row.fields.username,
       })
       console.log(res)
+    },
+    goProjectDetails(index) {
+      console.log(this.teamProjects[index]);
+      this.$router.push({
+        name:'projectDetails',
+        params:{
+          projectId:this.teamProjects[index].pk,
+        }
+      })
     }
   },
   data() {
@@ -113,7 +134,7 @@ export default {
       teamProjects: [],
       showAddProjectModal: false,
       categories: ['关于团队', '项目', '团队成员'],
-      memberList:[],
+      memberList: [],
       move: 0,
       active: 0,
     }
@@ -126,13 +147,15 @@ export default {
   margin: 15px 0 0 15px !important;
   font-weight: 800 !important;
 }
+
 .main {
   width: 100%;
   height: 100%;
-  background-image: url('https://www.benchmark.tech/assets/images/bg-element1.png');
+  background-image: url("https://www.benchmark.tech/assets/images/bg-element1.png");
   background-size: cover;
   background-repeat: no-repeat;
 }
+
 ::v-deep .el-breadcrumb__inner {
   font-weight: 800 !important;
   cursor: pointer !important;
@@ -207,7 +230,53 @@ export default {
     color: #3f96b3;
   }
 }
+
 .memberAmount:hover {
   cursor: pointer;
+}
+
+.text {
+  font-size: 14px;
+}
+
+.item {
+  margin-bottom: 18px;
+}
+
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+
+.clearfix:after {
+  clear: both
+}
+
+.box-card {
+  width: 480px;
+}
+
+.projectCategoryContainer {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  margin: 20px 30px 30px 20px;
+  ::v-deep .el-card {
+    width: 28%;
+    height: 200px;
+    margin-top: 15px;
+    margin-left: 30px;
+  }
+
+  ::v-deep .el-card:hover {
+    cursor: pointer;
+  }
+}
+
+::v-deep .deleteProject {
+  width: 30px;
+  height: 30px;
+  margin-top: 30px;
 }
 </style>

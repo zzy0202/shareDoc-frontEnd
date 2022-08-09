@@ -5,18 +5,18 @@ import HomeMain from "@/views/HomeMain";
 import ManageTeam from "@/views/ManageTeam";
 import ManageOnlineDocument from "@/views/ManageOnlineDocument";
 import ManageDesignPrototype from "@/views/ManageDesignPrototype";
-import ManageDrawPicture from "@/views/ManageDrawPicture";
 import LoginPage from "@/views/LoginPage";
 import DocumentEditor from "@/views/DocumentEditorPage";
 import TeamDetails from "@/views/TeamDetails";
 import HomePage from "@/views/HomePage";
 import store from "@/store";
+import ProjectDetails from "@/views/ProjectDetails";
 
 Vue.use(VueRouter)
 
 const routes = [
 	{
-		path:'/',
+		path: '/',
 		redirect: '/homePage'
 	},
 	{
@@ -31,7 +31,8 @@ const routes = [
 			{path: '/manageTeam', name: 'manageTeam', component: ManageTeam},
 			{path: '/manageDocument', name: 'manageDocument', component: ManageOnlineDocument},
 			{path: '/manageDesignPrototype', name: 'manageDesignPrototype', component: ManageDesignPrototype},
-			{path: '/teamDetails/:teamId',name: 'teamDetails', component: TeamDetails},
+			{path: '/teamDetails/:teamId', name: 'teamDetails', component: TeamDetails},
+			{path: '/projectDetails/:projectId',name:'projectDetails',component: ProjectDetails},
 		]
 	},
 	{
@@ -48,8 +49,8 @@ const routes = [
 		component: DocumentEditor,
 	},
 	{
-		path:'/homePage',
-		name:'homePage',
+		path: '/homePage',
+		name: 'homePage',
 		component: HomePage,
 	}
 ]
@@ -59,7 +60,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-	if (to.path === '/login'||to.path==='/homePage') {
+	if (to.path === '/login' || to.path === '/homePage') {
 		next();
 	} else {
 		if (!store.state.isLogin) {
