@@ -37,7 +37,8 @@ export default Vue.extend({
       this.editor = Object.seal(editor) // 一定要用 Object.seal() ，否则会报错
     },
     showMe() {
-      this.$emit('getEditorContent',this.html);
+      console.log(this.html)
+      // this.$emit('getEditorContent',this.html);
     }
   },
   created() {

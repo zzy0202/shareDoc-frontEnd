@@ -33,6 +33,10 @@
             <div class="text item">
               {{ item.fields.description }}
             </div>
+            <span class="text item" style="margin-top: 30px;display: inline-block">
+              创建时间: {{ item.fields.created_at | modifyDate}}<br>
+              最后修改: {{ item.fields.updated_at | modifyDate}}
+            </span>
             <el-button class="deleteProject" type="danger" icon="el-icon-delete" style="float: right; padding: 3px 0"
                        circle></el-button>
           </el-card>
@@ -40,7 +44,7 @@
         <AddProjectModal v-if="showAddProjectModal" v-on:closeModal="closeModal"></AddProjectModal>
       </div>
     </div>
-    <div class="memberContainer" v-if="this.active===2" style="margin: 15px 0 0 15px">
+    <div class="memberContainer" v-if="this.active===2" style="margin: 10px 0 0 15px">
       <el-table
           :data="memberList"
           style="width: 100%">
@@ -49,7 +53,7 @@
             width="350">
           <template slot-scope="scope">
             <i class="el-icon-s-custom"></i>
-            <span style="margin-left: 10px">{{ scope.row.fields.username }}</span>
+            <span style="margin-left: 10px">{{ scope.row.username }}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -57,16 +61,26 @@
             width="350">
           <template slot-scope="scope">
             <div slot="reference" class="name-wrapper">
-              <el-tag size="medium">{{ scope.row.fields.email }}</el-tag>
+              <el-tag size="medium">{{ scope.row.email }}</el-tag>
             </div>
+          </template>
+        </el-table-column>
+        <el-table-column
+            label="用户身份"
+            width="200">
+          <template slot-scope="scope">
+            <span style="margin-left: 10px" v-if="scope.row.role===2"> 创建者 </span>
+            <span style="margin-left: 10px" v-if="scope.row.role===1"> 管理员 </span>
+            <span style="margin-left: 10px" v-if="scope.row.role===0"> 普通成员 </span>
           </template>
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
+            <el-button size="mini" type="primary" v-if="scope.row.role===0">设为管理员</el-button>
             <el-button
                 size="mini"
                 type="danger"
-                @click="handleDelete(scope.$index, scope.row)">删除
+                @click="handleDelete(scope.$index, scope.row)" v-if="scope.row.role!==2&scope.row.role!==1">删除
             </el-button>
           </template>
         </el-table-column>
@@ -79,6 +93,7 @@
 import {deleteTeamMember, getProjectList, getTeamDetails} from "@/api/projectManage";
 import AddProjectModal from "@/components/Project/AddProjectModal";
 import store from "@/store";
+import da from "element-ui/src/locale/lang/da";
 
 export default {
   name: "TeamDetails",
@@ -91,11 +106,12 @@ export default {
     this.teamDetails = res;
     this.teamProjects = res.projects;
     this.memberList = res.members;
-    console.log(this.memberList)
+    console.log(res);
     res = await getProjectList({
       team_pk: this.$route.params.teamId,
       username: store.state.user.username,
     })
+    this.teamProjects = res;
     console.log(this.teamProjects);
   },
   methods: {
@@ -121,9 +137,9 @@ export default {
     goProjectDetails(index) {
       console.log(this.teamProjects[index]);
       this.$router.push({
-        name:'projectDetails',
-        params:{
-          projectId:this.teamProjects[index].pk,
+        name: 'projectDetails',
+        params: {
+          projectId: this.teamProjects[index].pk,
         }
       })
     }
@@ -137,6 +153,13 @@ export default {
       memberList: [],
       move: 0,
       active: 0,
+    }
+  },
+  filters: {
+    modifyDate(value) {
+      let date = value.slice(0,10);
+      let time = value.slice(11,19);
+      return date +'  '+time
     }
   }
 }
@@ -262,6 +285,7 @@ export default {
   justify-content: flex-start;
   flex-wrap: wrap;
   margin: 20px 30px 30px 20px;
+
   ::v-deep .el-card {
     width: 28%;
     height: 200px;
@@ -277,6 +301,6 @@ export default {
 ::v-deep .deleteProject {
   width: 30px;
   height: 30px;
-  margin-top: 30px;
+  margin-top: 35px;
 }
 </style>

@@ -54,6 +54,7 @@ export default {
   },
   methods: {
     returnBack() {
+      console.log(this.fileInfo.fileContent);
       if (this.isSaved) {
         this.$router.go(-1);
       } else {
