@@ -51,8 +51,13 @@ export default {
         description: this.project.description,
         team_pk: this.$route.params.teamId,
       })
-      console.log(res)
-      this.$emit('closeModal');
+      if(res.msg==='success') {
+        this.$message({
+          message:'成功创建项目',
+          type:"success",
+        })
+        this.$emit('closeModal');
+      }
     },
     closeModal(test) {
       if(test!==11) {

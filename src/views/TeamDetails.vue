@@ -93,7 +93,6 @@
 import {deleteTeamMember, getProjectList, getTeamDetails} from "@/api/projectManage";
 import AddProjectModal from "@/components/Project/AddProjectModal";
 import store from "@/store";
-import da from "element-ui/src/locale/lang/da";
 
 export default {
   name: "TeamDetails",
@@ -118,8 +117,13 @@ export default {
     addProject() {
       this.showAddProjectModal = true;
     },
-    closeModal() {
+    async closeModal() {
       this.showAddProjectModal = false;
+      this.teamProjects = await getProjectList({
+        team_pk: this.$route.params.teamId,
+        username: store.state.user.username,
+      });
+      console.log(this.teamProjects);
     },
     moveBar(index) {
       this.active = index;

@@ -5,6 +5,10 @@
 </template>
 
 <script>
+import {Tree, // 基础树
+  Fold, Check, Draggable, // 插件: 折叠, 勾选框, 拖拽
+} from 'he-tree-vue'
+import 'he-tree-vue/dist/he-tree-vue.css' // 基础样式
 export default {
   name: "ProjectAside"
 }
