@@ -139,7 +139,7 @@ export default {
       console.log(res)
     },
     goProjectDetails(index) {
-      console.log(this.teamProjects[index]);
+      store.commit('setProjectId',{projectId:this.teamProjects[index].pk});
       this.$router.push({
         name: 'projectDetails',
         params: {

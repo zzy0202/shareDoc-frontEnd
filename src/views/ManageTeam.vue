@@ -80,6 +80,7 @@ export default {
       }
     },
     goTeamDetails(index) {
+      store.commit('setTeamId',{teamId:this.teamList[index].pk});
       this.$router.push({
         name: 'teamDetails',
         params: {

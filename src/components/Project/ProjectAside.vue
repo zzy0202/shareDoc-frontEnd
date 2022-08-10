@@ -4,7 +4,7 @@
       <div style="margin-left: 10px;margin-top: 20px;">
         <vue-tree-list
             @click="onClick"
-            :model="data"
+            :model="fileData"
             default-tree-node-name="new node"
             default-leaf-node-name="new leaf"
             v-bind:default-expanded="false"
@@ -25,20 +25,39 @@
 </template>
 
 <script>
-import {VueTreeList, Tree, TreeNode} from 'vue-tree-list'
+import {Tree, TreeNode, VueTreeList} from 'vue-tree-list'
+import store from "@/store";
+import {getDocumentListFroProject} from "@/api/document";
 
 export default {
   name: "ProjectAside",
   components: {
     VueTreeList,
   },
+  async mounted() {
+    store.commit('setProjectId', {projectId: this.$route.params.projectId});
+    this.fileInfo = await getDocumentListFroProject(parseInt(this.$route.params.projectId), {
+      username: store.state.user.username,
+    });
+    let obj = {};
+    console.log(this.fileInfo);
+    for (let i = 0; i < this.fileInfo.length; i++) {
+      this.fileData.children[0].children.push({
+        id:this.fileInfo[i].pk,
+        name:this.fileInfo[i].title,
+        isLeaf:true,
+        isFile:true,
+      });
+    }
+    this.fileData.children[0].children.splice(0,1);
+  },
   data() {
     return {
       newTree: {},
-      data: new Tree([
+      fileData: new Tree([
         {
           name: '普通文档',
-          id: 1,
+          id: -1,
           pid: 0,
           dragDisabled: true,
           addTreeNodeDisabled: true,
@@ -49,8 +68,6 @@ export default {
             {
               name: 'Node 1-2',
               id: 2,
-              isLeaf: true,
-              pid: 1
             }
           ]
         },
@@ -62,15 +79,10 @@ export default {
           addLeafNodeDisabled: true,
           editNodeDisabled: true,
           delNodeDisabled: true,
-          children: [
-            {
-              name: 'Node 1-2',
-              isLeaf: true,
-              pid: 1
-            }
-          ]
+          children: []
         },
-      ])
+      ]),
+      fileInfo: [],
     }
   },
   methods: {
@@ -94,6 +106,7 @@ export default {
     },
     getNewTree() {
       var vm = this
+
       function _dfs(oldNode) {
         var newNode = {}
         for (var k in oldNode) {
@@ -109,6 +122,7 @@ export default {
         }
         return newNode
       }
+
       vm.newTree = _dfs(vm.data)
     }
   }
@@ -123,17 +137,21 @@ export default {
   margin-top: 2px;
   box-shadow: 3px 3px #efefef
 }
+
 .vtl {
   .vtl-drag-disabled {
     background-color: #d0cfcf;
+
     &:hover {
       background-color: #d0cfcf;
     }
   }
+
   .vtl-disabled {
     background-color: #d0cfcf;
   }
 }
+
 .icon {
   &:hover {
     cursor: pointer;
@@ -143,5 +161,11 @@ export default {
 .muted {
   color: gray;
   font-size: 80%;
+}
+::v-deep .vtl-operation {
+  display: none !important;
+}
+::v-deep .vtl-node-main:hover {
+  cursor: pointer;
 }
 </style>

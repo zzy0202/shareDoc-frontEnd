@@ -38,7 +38,8 @@
 
 <script>
 import ProjectAside from "@/components/Project/ProjectAside";
-
+import store from "@/store";
+import {getDocumentListFroProject} from "@/api/document";
 export default {
   name: "ProjectDetails",
   components: {

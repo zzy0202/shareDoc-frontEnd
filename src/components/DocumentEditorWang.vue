@@ -19,7 +19,6 @@
 <script>
 import Vue from 'vue'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
-
 export default Vue.extend({
   props:['docContent'],
   components: { Editor, Toolbar },
@@ -45,7 +44,7 @@ export default Vue.extend({
     },
     showMe() {
       console.log(this.html)
-      // this.$emit('getEditorContent',this.html);
+      this.$emit('getEditorContent',this.html);
     }
   },
   created() {

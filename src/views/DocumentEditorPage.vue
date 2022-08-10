@@ -3,7 +3,8 @@
     <div class="OperationWrap">
       <div class="buttonWrap">
         <el-button type="primary" icon="el-icon-back" @click="returnBack">返回</el-button>
-        <el-button type="primary" icon="el-icon-paperclip" @click="save">保存</el-button>
+        <el-button type="primary" icon="el-icon-paperclip" @click="save" v-if="$route.params.isCreate">创建</el-button>
+        <el-button type="primary" icon="el-icon-paperclip" @click="save" v-else>保存</el-button>
       </div>
     </div>
     <div class="titleWrap" style="width: 95vw;margin: 5px auto 15px;">
@@ -22,6 +23,7 @@
 import DocumentEditorWang from "@/components/DocumentEditorWang";
 import {generateRandomId} from "@/assets/js/util";
 import store from "@/store";
+import {createDoc} from "@/api/document";
 
 export default {
   name: "DocumentEditor",
@@ -51,6 +53,9 @@ export default {
     } else {
       next();
     }
+  },
+  mounted() {
+    console.log(store.state.currentProjectId,store.state.currentTeamId);
   },
   methods: {
     returnBack() {
@@ -88,27 +93,23 @@ export default {
         type: "success",
       })
     },
-    addDocument(content) {
-      let arr = JSON.parse(localStorage.getItem('fileInfo')) || [];
-      if(!this.isEditingDocument) {     //在创建文件
-        let year = new Date().getFullYear();
-        let month = new Date().getMonth() + 1;
-        let date = new Date().getDate();
-        let file = {
-          filename: this.fileInfo.filename,
-          fileContent: content,
-          lastModified: `${year}-${month}-${date}`,
-          creator: store.state.user.username,
-          fileId: generateRandomId(),
-        }
-        arr.push(file);
+    async addDocument(content) {
+      if(this.$route.params.isCreate) {     //在创建文件
+        let res = await createDoc({
+          title:this.fileInfo.filename,
+          team_pk:store.state.currentTeamId,
+          project_pk:store.state.currentProjectId,
+          username:store.state.user.username,
+          content:content,
+          description:'',
+        });
+        console.log(res);
       }
       else {
         this.fileInfo.fileContent = content;
         console.log(this.fileInfo);
         arr[parseInt(this.$route.query.index)] = this.fileInfo;
       }
-      console.log(arr);
       localStorage.setItem('fileInfo', JSON.stringify(arr));
     }
   }
