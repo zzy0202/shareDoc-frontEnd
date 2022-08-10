@@ -12,6 +12,7 @@ export default new Vuex.Store({
     },
     currentTeamId:localStorage.getItem('currentTeamId') || 0,
     currentProjectId:localStorage.getItem('currentProjectId')||0,
+    currentFileId:localStorage.getItem('currentDocumentId') || 0,
   },
   getters: {
   },
@@ -28,6 +29,11 @@ export default new Vuex.Store({
     setProjectId(state,payload) {
       state.currentProjectId = payload.projectId;
       localStorage.setItem('currentProjectId',payload.projectId);
+    },
+    setDocumentId(state,payload) {
+      state.currentFileId = payload.documentId;
+      console.log(state.documentId);
+      localStorage.setItem('currentDocumentId',payload.documentId)
     }
   },
   actions: {

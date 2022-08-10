@@ -24,8 +24,17 @@ let getDocDetails = (docId, params) => {
 	})
 }
 
+let updateDoc = data =>{
+	return request({
+		url:'/docs/update/',
+		method:"POST",
+		data,
+	})
+}
+
 export {
 	createDoc,
 	getDocumentListFroProject,
 	getDocDetails,
+	updateDoc
 }

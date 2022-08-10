@@ -10,12 +10,12 @@
             v-bind:default-expanded="false"
         >
           <template v-slot:leafNameDisplay="slotProps">
-        <span>
+        <span ref="showFile">
           {{ slotProps.model.name }} <span class="muted"></span>
         </span>
           </template>
-          <span class="icon" slot="addTreeNodeIcon">📂</span>
-          <span class="icon" slot="addLeafNodeIcon">＋</span>
+<!--          <span class="icon" slot="addTreeNodeIcon">📂</span>-->
+<!--          <span class="icon" slot="addLeafNodeIcon">＋</span>-->
           <span class="icon" slot="leafNodeIcon">📃</span>
           <span class="icon" slot="treeNodeIcon">📂</span>
         </vue-tree-list>
@@ -50,6 +50,7 @@ export default {
       });
     }
     this.fileData.children[0].children.splice(0,1);
+    this.$refs.showFile.click();
   },
   data() {
     return {
@@ -97,12 +98,16 @@ export default {
       console.log(params)
     },
     onClick(params) {
-      console.log(params)
-    },
-    addNode() {
-      var node = new TreeNode({name: 'new node', isLeaf: false})
-      if (!this.data.children) this.data.children = []
-      this.data.addChildren(node)
+      if(params.isFile) {
+        store.commit('setDocumentId',{documentId:params.id})
+        this.$router.push({
+          name:'documentEdit',
+          params:{
+            isCreate:false,
+            fileId:params.id,
+          }
+        })
+      }
     },
     getNewTree() {
       var vm = this

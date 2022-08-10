@@ -3,8 +3,8 @@
     <div class="OperationWrap">
       <div class="buttonWrap">
         <el-button type="primary" icon="el-icon-back" @click="returnBack">返回</el-button>
-        <el-button type="primary" icon="el-icon-paperclip" @click="save" v-if="$route.params.isCreate">创建</el-button>
-        <el-button type="primary" icon="el-icon-paperclip" @click="save" v-else>保存</el-button>
+        <el-button type="primary" icon="el-icon-paperclip" @click="save('create')" v-if="$route.params.isCreate">创建</el-button>
+        <el-button type="primary" icon="el-icon-paperclip" @click="save('save')" v-else>保存</el-button>
       </div>
     </div>
     <div class="titleWrap" style="width: 95vw;margin: 5px auto 15px;">
@@ -15,15 +15,14 @@
       <span class="iconfont icon-bianji" style="color: skyblue" @click="editTitle"></span>
     </div>
     <DocumentEditorWang style="width: 95vw;margin: 0 auto 50px auto;height: 150vh" class="editor" ref="editorChild"
-                        v-on:getEditorContent="addDocument" :docContent="fileInfo.fileContent"></DocumentEditorWang>
+                        v-on:getEditorContent="addDocument" v-on:getDocumentInfo="getDocumentInfo" :docContent="fileInfo.fileContent"></DocumentEditorWang>
   </div>
 </template>
 
 <script>
 import DocumentEditorWang from "@/components/DocumentEditorWang";
-import {generateRandomId} from "@/assets/js/util";
 import store from "@/store";
-import {createDoc} from "@/api/document";
+import {createDoc,updateDoc} from "@/api/document";
 
 export default {
   name: "DocumentEditor",
@@ -40,6 +39,7 @@ export default {
       },
       isEditingTitle: false,
       isEditingDocument: false,
+      operation:'',
     }
   },
   beforeRouteEnter(to, from, next) {
@@ -55,7 +55,6 @@ export default {
     }
   },
   mounted() {
-    console.log(store.state.currentProjectId,store.state.currentTeamId);
   },
   methods: {
     returnBack() {
@@ -85,7 +84,8 @@ export default {
     cancelEditTitle() {
       this.isEditingTitle = false;
     },
-    save() {
+    save(operation) {
+      this.operation = operation;
       this.$refs.editorChild.showMe();
       this.isSaved = true;
       this.$message({
@@ -105,12 +105,19 @@ export default {
         });
         console.log(res);
       }
-      else {
-        this.fileInfo.fileContent = content;
-        console.log(this.fileInfo);
-        arr[parseInt(this.$route.query.index)] = this.fileInfo;
+      else {  //否则就是保存
+        let res = await updateDoc({
+          title:this.fileInfo.filename,
+          doc_pk:store.state.currentFileId,
+          team_pk:store.state.currentTeamId,
+          username:store.state.user.username,
+          content,
+          description:'',
+        })
       }
-      localStorage.setItem('fileInfo', JSON.stringify(arr));
+    },
+    getDocumentInfo(res) {
+      this.fileInfo.filename = res.title;
     }
   }
 }

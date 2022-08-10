@@ -18,7 +18,9 @@
 
 <script>
 import Vue from 'vue'
+import store from '@/store'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
+import {getDocDetails} from "@/api/document";
 export default Vue.extend({
   props:['docContent'],
   components: { Editor, Toolbar },
@@ -43,7 +45,6 @@ export default Vue.extend({
       this.editor = Object.seal(editor) // 一定要用 Object.seal() ，否则会报错
     },
     showMe() {
-      console.log(this.html)
       this.$emit('getEditorContent',this.html);
     }
   },
@@ -54,12 +55,28 @@ export default Vue.extend({
       }
     })
   },
-  mounted() {
+  async mounted() {
     if(this.$route.params.isCreate) {
       setTimeout(() => {
         this.html = this.template[this.$route.params.templateType];
       }, 1)
     }
+    else {
+      this.$forceUpdate();
+      console.log(store.state.currentFileId);
+      let res =await getDocDetails(store.state.currentFileId,{
+        username:store.state.user.username,
+      })
+      this.html = res.content;
+      this.$emit('getDocumentInfo',res)
+    }
+  },
+  async activated() {
+    let res =await getDocDetails(store.state.currentFileId,{
+      username:store.state.user.username,
+    })
+    this.html = res.content;
+    this.$emit('getDocumentInfo',res)
   },
   beforeDestroy() {
     const editor = this.editor

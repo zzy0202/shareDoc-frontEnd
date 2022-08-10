@@ -63,9 +63,17 @@ export default {
     addTeam() {
       this.addingTeam = true;
     },
-    closeModal() {
+    async closeModal() {
       this.addingTeam = false;
       this.$router.go(1);
+      let res = await getTeamList({
+        username: store.state.user.username,
+      });
+      if (res.msg && res.msg === 'no teams you joined') {
+
+      } else {
+        this.teamList = res
+      }
     },
     async addFriend() {
       let res = await addFriend({
