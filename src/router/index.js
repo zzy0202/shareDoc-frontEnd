@@ -9,6 +9,7 @@ import LoginPage from "@/views/LoginPage";
 import DocumentEditor from "@/views/DocumentEditorPage";
 import TeamDetails from "@/views/TeamDetails";
 import HomePage from "@/views/HomePage";
+import PrototypeEditor from "@/views/PrototypeEditor";
 import store from "@/store";
 import ProjectDetails from "@/views/ProjectDetails";
 
@@ -27,7 +28,7 @@ const routes = [
 			name: 'homeMain',
 		},
 		children: [
-			{path: '/main', name: 'homeMain', component: HomeMain},
+			{path: '/main', name: 'homeMain', component: HomeMain,},
 			{path: '/manageTeam', name: 'manageTeam', component: ManageTeam},
 			{path: '/manageDocument', name: 'manageDocument', component: ManageOnlineDocument},
 			{path: '/manageDesignPrototype', name: 'manageDesignPrototype', component: ManageDesignPrototype},
@@ -47,6 +48,11 @@ const routes = [
 		path: '/documentEdit',
 		name: 'documentEdit',
 		component: DocumentEditor,
+	},
+	{
+		path:'/prototypeEdit',
+		name:'prototypeEdit',
+		component: PrototypeEditor,
 	},
 	{
 		path: '/homePage',

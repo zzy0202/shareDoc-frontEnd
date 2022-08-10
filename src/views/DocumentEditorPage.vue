@@ -3,8 +3,10 @@
     <div class="OperationWrap">
       <div class="buttonWrap">
         <el-button type="primary" icon="el-icon-back" @click="returnBack">返回</el-button>
-        <el-button type="primary" icon="el-icon-paperclip" @click="save('create')" v-if="$route.params.isCreate">创建</el-button>
+        <el-button type="primary" icon="el-icon-paperclip" @click="save('create')" v-if="$route.params.isCreate">创建
+        </el-button>
         <el-button type="primary" icon="el-icon-paperclip" @click="save('save')" v-else>保存</el-button>
+        <el-button type="primary" icon="el-icon-paperclip"@click="getPdf('#w-e-textarea-1')">导出成PDF</el-button>
       </div>
     </div>
     <div class="titleWrap" style="width: 95vw;margin: 5px auto 15px;">
@@ -14,15 +16,16 @@
              @keyup.enter="cancelEditTitle">
       <span class="iconfont icon-bianji" style="color: skyblue" @click="editTitle"></span>
     </div>
-    <DocumentEditorWang style="width: 95vw;margin: 0 auto 50px auto;height: 150vh" class="editor" ref="editorChild"
-                        v-on:getEditorContent="addDocument" v-on:getDocumentInfo="getDocumentInfo" :docContent="fileInfo.fileContent"></DocumentEditorWang>
+    <DocumentEditorWang id="editor" style="width: 95vw;margin: 0 auto 50px auto;height: 150vh" class="editor" ref="editorChild"
+                        v-on:getEditorContent="addDocument" v-on:getDocumentInfo="getDocumentInfo"
+                        :docContent="fileInfo.fileContent"></DocumentEditorWang>
   </div>
 </template>
 
 <script>
 import DocumentEditorWang from "@/components/DocumentEditorWang";
 import store from "@/store";
-import {createDoc,updateDoc} from "@/api/document";
+import {createDoc, updateDoc} from "@/api/document";
 
 export default {
   name: "DocumentEditor",
@@ -37,9 +40,11 @@ export default {
         fileContent: '',
         lastChanged: '',
       },
+      pageData: null,  //接收html格式代码
+      htmlTitle: '文档PDF',
       isEditingTitle: false,
       isEditingDocument: false,
-      operation:'',
+      operation: '',
     }
   },
   beforeRouteEnter(to, from, next) {
@@ -94,31 +99,30 @@ export default {
       })
     },
     async addDocument(content) {
-      if(this.$route.params.isCreate) {     //在创建文件
+      if (this.$route.params.isCreate) {     //在创建文件
         let res = await createDoc({
-          title:this.fileInfo.filename,
-          team_pk:store.state.currentTeamId,
-          project_pk:store.state.currentProjectId,
-          username:store.state.user.username,
-          content:content,
-          description:'',
+          title: this.fileInfo.filename,
+          team_pk: store.state.currentTeamId,
+          project_pk: store.state.currentProjectId,
+          username: store.state.user.username,
+          content: content,
+          description: '',
         });
         console.log(res);
-      }
-      else {  //否则就是保存
+      } else {  //否则就是保存
         let res = await updateDoc({
-          title:this.fileInfo.filename,
-          doc_pk:store.state.currentFileId,
-          team_pk:store.state.currentTeamId,
-          username:store.state.user.username,
+          title: this.fileInfo.filename,
+          doc_pk: store.state.currentFileId,
+          team_pk: store.state.currentTeamId,
+          username: store.state.user.username,
           content,
-          description:'',
+          description: '',
         })
       }
     },
     getDocumentInfo(res) {
       this.fileInfo.filename = res.title;
-    }
+    },
   }
 }
 </script>

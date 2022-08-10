@@ -19,7 +19,7 @@
           <h3>创建文档</h3>
           <span class="iconfont icon-chuangjianzhibiao"></span>
         </div>
-        <div class="createPrototype">
+        <div class="createPrototype" @click="goPrototype">
           <h3>创建原型设计</h3>
           <span class="iconfont icon-yuanxingsheji"></span>
         </div>
@@ -63,6 +63,11 @@ export default {
     },
     showTemplate() {
       this.templateShow = !this.templateShow;
+    },
+    goPrototype() {
+      this.$router.push({
+        path:'/prototypeEdit'
+      })
     },
     goCreatePage(index) {
       this.$router.push({
@@ -210,5 +215,9 @@ export default {
 
 .chooseTemplateActive {
   transform: translateY(0px);
+}
+.rightSide {
+  background-image: url(https://www.benchmark.tech/assets/images/bg-element1.png);
+  background-size: cover;
 }
 </style>

@@ -65,7 +65,6 @@ export default {
     },
     async closeModal() {
       this.addingTeam = false;
-      this.$router.go(1);
       let res = await getTeamList({
         username: store.state.user.username,
       });
@@ -128,6 +127,7 @@ export default {
   height: 220px;
   flex-basis: 30%;
   margin-left: 20px;
+  margin-top: 20px;
 }
 
 ::v-deep .el-input {
@@ -163,5 +163,6 @@ export default {
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  flex-wrap: wrap;
 }
 </style>
