@@ -17,7 +17,7 @@ export default {
   name: "HomeAside",
   data() {
     return {
-      menu: ['团队管理', '文档管理', '设计原型'],
+      menu: ['团队管理', '文档管理'],
       routerName: ['manageTeam', 'manageDocument', 'managePrototype', 'teamDetails', 'projectDetails'],
       active: 0,
     }

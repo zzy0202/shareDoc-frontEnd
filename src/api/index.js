@@ -2,8 +2,8 @@ import axios from "axios";
 import store from '@/store/index'
 
 const request = axios.create({
-	// baseURL: 'http://127.0.0.1:8000/',
-	baseURL: 'http://3.35.69.253:8000/',
+	baseURL: 'http://127.0.0.1:8000/',
+	// baseURL: 'http://3.35.69.253:8000/',
 })
 
 request.interceptors.request.use(function (config) {

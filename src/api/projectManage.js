@@ -16,10 +16,10 @@ let getTeamList = params => {
 	})
 }
 
-let getTeamDetails = (fileId,params) => {
+let getTeamDetails = (fileId, params) => {
 	return request({
-		url:'/team/detail/'+fileId,
-		method:"GET",
+		url: '/team/detail/' + fileId,
+		method: "GET",
 		params,
 	})
 }
@@ -40,21 +40,38 @@ let createProject = (data) => {
 	})
 }
 
-let getProjectList = params =>{
+let getProjectList = params => {
 	return request({
-		url:'/project/manage/',
-		method:"GET",
+		url: '/project/manage/',
+		method: "GET",
 		params,
 	})
 }
 
-let deleteTeamMember = data =>{
+let deleteTeamMember = data => {
 	return request({
-		url:'/team/del/',
-		method:"POST",
+		url: '/team/del/',
+		method: "POST",
 		data,
 	})
 }
+
+let promoteTeammate = data => {
+	return request({
+		url: '/team/pro/',
+		method: "POST",
+		data,
+	})
+}
+
+let degradeTeammate = data => {
+	return request({
+		url: '/team/deg/',
+		method: "POST",
+		data,
+	})
+}
+
 
 export {
 	getProjectManageInfo,
@@ -64,4 +81,6 @@ export {
 	getTeamDetails,
 	getProjectList,
 	deleteTeamMember,
+	promoteTeammate,
+	degradeTeammate,
 }

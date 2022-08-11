@@ -34,8 +34,8 @@
               {{ item.fields.description }}
             </div>
             <span class="text item" style="margin-top: 30px;display: inline-block">
-              创建时间: {{ item.fields.created_at | modifyDate}}<br>
-              最后修改: {{ item.fields.updated_at | modifyDate}}
+              创建时间: {{ item.fields.created_at | modifyDate }}<br>
+              最后修改: {{ item.fields.updated_at | modifyDate }}
             </span>
             <el-button class="deleteProject" type="danger" icon="el-icon-delete" style="float: right; padding: 3px 0"
                        circle></el-button>
@@ -76,11 +76,15 @@
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button size="mini" type="primary" v-if="scope.row.role===0">设为管理员</el-button>
+            <el-button size="mini" type="primary" v-if="scope.row.role===0" @click="promote(scope.row.username)">设为管理员
+            </el-button>
+            <el-button size="mini" type="primary" v-if="scope.row.role===1" @click="degrade(scope.row.username)">
+              设为普通成员
+            </el-button>
             <el-button
                 size="mini"
                 type="danger"
-                @click="handleDelete(scope.$index, scope.row)" v-if="scope.row.role!==2&scope.row.role!==1">删除
+                @click="handleDelete(scope.row.username)" v-if="scope.row.role!==2&scope.row.role!==1">删除
             </el-button>
           </template>
         </el-table-column>
@@ -90,7 +94,7 @@
 </template>
 
 <script>
-import {deleteTeamMember, getProjectList, getTeamDetails} from "@/api/projectManage";
+import {degradeTeammate, deleteTeamMember, getProjectList, getTeamDetails, promoteTeammate} from "@/api/projectManage";
 import AddProjectModal from "@/components/Project/AddProjectModal";
 import store from "@/store";
 
@@ -111,9 +115,42 @@ export default {
       username: store.state.user.username,
     })
     this.teamProjects = res;
-    console.log(this.teamProjects);
   },
   methods: {
+    async promote(target) {
+      let res = await promoteTeammate({
+        team_pk: store.state.currentTeamId,
+        oper: store.state.user.username,
+        target: target,
+      })
+      res = await getTeamDetails(this.$route.params.teamId, {});
+      this.teamDetails = res;
+      this.teamProjects = res.projects;
+      this.memberList = res.members;
+      console.log(res);
+      res = await getProjectList({
+        team_pk: this.$route.params.teamId,
+        username: store.state.user.username,
+      })
+      this.teamProjects = res;
+    },
+    async degrade(target) {
+      let res = await degradeTeammate({
+        team_pk: store.state.currentTeamId,
+        oper: store.state.user.username,
+        target: target,
+      })
+      res = await getTeamDetails(this.$route.params.teamId, {});
+      this.teamDetails = res;
+      this.teamProjects = res.projects;
+      this.memberList = res.members;
+      console.log(res);
+      res = await getProjectList({
+        team_pk: this.$route.params.teamId,
+        username: store.state.user.username,
+      })
+      this.teamProjects = res;
+    },
     addProject() {
       this.showAddProjectModal = true;
     },
@@ -129,17 +166,25 @@ export default {
       this.active = index;
       this.move = 111.2 * (index);
     },
-    async handleDelete(index, row) {
-      console.log(index, row);
+    async handleDelete(target) {
       let res = await deleteTeamMember({
-        team_pk: parseInt(this.$route.params.teamId),
+        team_pk: store.state.currentTeamId,
         oper: store.state.user.username,
-        target: row.fields.username,
+        target: target,
       })
-      console.log(res)
+      res = await getTeamDetails(this.$route.params.teamId, {});
+      this.teamDetails = res;
+      this.teamProjects = res.projects;
+      this.memberList = res.members;
+      console.log(res);
+      res = await getProjectList({
+        team_pk: this.$route.params.teamId,
+        username: store.state.user.username,
+      })
+      this.teamProjects = res;
     },
     goProjectDetails(index) {
-      store.commit('setProjectId',{projectId:this.teamProjects[index].pk});
+      store.commit('setProjectId', {projectId: this.teamProjects[index].pk});
       this.$router.push({
         name: 'projectDetails',
         params: {
@@ -161,9 +206,9 @@ export default {
   },
   filters: {
     modifyDate(value) {
-      let date = value.slice(0,10);
-      let time = value.slice(11,19);
-      return date +'  '+time
+      let date = value.slice(0, 10);
+      let time = value.slice(11, 19);
+      return date + '  ' + time
     }
   }
 }
@@ -178,7 +223,7 @@ export default {
 .main {
   width: 100%;
   height: 100%;
-  background-image: url("https://www.benchmark.tech/assets/images/bg-element1.png");
+  background-image: url(https://www.benchmark.tech/assets/images/bg-element1.png);
   background-size: cover;
   background-repeat: no-repeat;
 }
